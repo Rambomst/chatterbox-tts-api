@@ -21,7 +21,7 @@ class Config:
     EXAGGERATION = float(os.getenv('EXAGGERATION', 0.5))
     CFG_WEIGHT = float(os.getenv('CFG_WEIGHT', 0.5))
     TEMPERATURE = float(os.getenv('TEMPERATURE', 0.8))
-    REPETITION_PENALTY = float(os.getenv('REPETITION_PENALTY', 1.2))
+    REPETITION_PENALTY = float(os.getenv('REPETITION_PENALTY', 1.7))
     MIN_P = float(os.getenv('MIN_P', 0.05))
     TOP_P = float(os.getenv('TOP_P', 1.0))
     

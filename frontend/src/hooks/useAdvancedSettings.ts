@@ -7,7 +7,7 @@ const DEFAULT_SETTINGS = {
   exaggeration: 0.5,
   cfgWeight: 0.5,
   temperature: 0.8,
-  repetitionPenalty: 1.2,
+  repetitionPenalty: 1.7,
   minP: 0.05,
   topP: 1.0
 };
