@@ -1,6 +1,6 @@
 # Chatterbox TTS Core Package with multilingual support
 # chatterbox-tts==0.1.4
-chatterbox-tts @ git+https://github.com/travisvn/chatterbox-multilingual.git@exp
+chatterbox-tts @ git+https://github.com/Rambomst/chatterbox-multilingual.git@improvement/model-pool-testing
 
 # Required for Chatterbox TTS watermarker functionality
 resemble-perth

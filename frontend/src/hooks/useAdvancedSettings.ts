@@ -6,13 +6,19 @@ const STORAGE_KEY = 'chatterbox-advanced-settings';
 const DEFAULT_SETTINGS = {
   exaggeration: 0.5,
   cfgWeight: 0.5,
-  temperature: 0.8
+  temperature: 0.8,
+  repetitionPenalty: 1.2,
+  minP: 0.05,
+  topP: 1.0
 };
 
 interface AdvancedSettings {
   exaggeration: number;
   cfgWeight: number;
   temperature: number;
+  repetitionPenalty: number;
+  minP: number;
+  topP: number;
 }
 
 export function useAdvancedSettings() {
@@ -27,7 +33,10 @@ export function useAdvancedSettings() {
         return {
           exaggeration: typeof parsed.exaggeration === 'number' ? parsed.exaggeration : DEFAULT_SETTINGS.exaggeration,
           cfgWeight: typeof parsed.cfgWeight === 'number' ? parsed.cfgWeight : DEFAULT_SETTINGS.cfgWeight,
-          temperature: typeof parsed.temperature === 'number' ? parsed.temperature : DEFAULT_SETTINGS.temperature
+          temperature: typeof parsed.temperature === 'number' ? parsed.temperature : DEFAULT_SETTINGS.temperature,
+          repetitionPenalty: typeof parsed.repetitionPenalty === 'number' ? parsed.repetitionPenalty : DEFAULT_SETTINGS.repetitionPenalty,
+          minP: typeof parsed.minP === 'number' ? parsed.minP : DEFAULT_SETTINGS.minP,
+          topP: typeof parsed.topP === 'number' ? parsed.topP : DEFAULT_SETTINGS.topP
         };
       }
     } catch (error) {
@@ -58,6 +67,18 @@ export function useAdvancedSettings() {
     setSettings(prev => ({ ...prev, temperature: value }));
   }, []);
 
+  const updateRepetitionPenalty = useCallback((value: number) => {
+    setSettings(prev => ({ ...prev, repetitionPenalty: value }));
+  }, []);
+
+  const updateMinP = useCallback((value: number) => {
+    setSettings(prev => ({ ...prev, minP: value }));
+  }, []);
+
+  const updateTopP = useCallback((value: number) => {
+    setSettings(prev => ({ ...prev, topP: value }));
+  }, []);
+
   const resetToDefaults = useCallback(() => {
     setSettings(DEFAULT_SETTINGS);
   }, []);
@@ -66,7 +87,10 @@ export function useAdvancedSettings() {
     return (
       settings.exaggeration === DEFAULT_SETTINGS.exaggeration &&
       settings.cfgWeight === DEFAULT_SETTINGS.cfgWeight &&
-      settings.temperature === DEFAULT_SETTINGS.temperature
+      settings.temperature === DEFAULT_SETTINGS.temperature &&
+      settings.repetitionPenalty === DEFAULT_SETTINGS.repetitionPenalty &&
+      settings.minP === DEFAULT_SETTINGS.minP &&
+      settings.topP === DEFAULT_SETTINGS.topP
     );
   }, [settings]);
 
@@ -75,11 +99,17 @@ export function useAdvancedSettings() {
     exaggeration: settings.exaggeration,
     cfgWeight: settings.cfgWeight,
     temperature: settings.temperature,
+    repetitionPenalty: settings.repetitionPenalty,
+    minP: settings.minP,
+    topP: settings.topP,
 
     // Update functions
     updateExaggeration,
     updateCfgWeight,
     updateTemperature,
+    updateRepetitionPenalty,
+    updateMinP,
+    updateTopP,
 
     // Utility functions
     resetToDefaults,

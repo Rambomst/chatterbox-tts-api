@@ -12,6 +12,12 @@ interface AdvancedSettingsProps {
   onCfgWeightChange: (value: number) => void;
   temperature: number;
   onTemperatureChange: (value: number) => void;
+  repetitionPenalty: number;
+  onRepetitionPenaltyChange: (value: number) => void;
+  minP: number;
+  onMinPChange: (value: number) => void;
+  topP: number;
+  onTopPChange: (value: number) => void;
   onResetToDefaults: () => void;
   isDefault: boolean;
 }
@@ -25,6 +31,12 @@ export default function AdvancedSettings({
   onCfgWeightChange,
   temperature,
   onTemperatureChange,
+  repetitionPenalty,
+  onRepetitionPenaltyChange,
+  minP,
+  onMinPChange,
+  topP,
+  onTopPChange,
   onResetToDefaults,
   isDefault
 }: AdvancedSettingsProps) {
@@ -99,6 +111,51 @@ export default function AdvancedSettings({
                 className="w-full"
               />
               <p className="text-xs text-muted-foreground">Controls randomness/creativity</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                Repetition Penalty: {repetitionPenalty}
+              </label>
+              <Slider
+                min={1.0}
+                max={3.0}
+                step={0.1}
+                value={[repetitionPenalty]}
+                onValueChange={(values) => onRepetitionPenaltyChange(values[0])}
+                className="w-full"
+              />
+              <p className="text-xs text-muted-foreground">Prevents repetitive speech patterns</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                Min P: {minP.toFixed(2)}
+              </label>
+              <Slider
+                min={0.0}
+                max={1.0}
+                step={0.01}
+                value={[minP]}
+                onValueChange={(values) => onMinPChange(values[0])}
+                className="w-full"
+              />
+              <p className="text-xs text-muted-foreground">Minimum probability threshold for sampling</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                Top P: {topP.toFixed(2)}
+              </label>
+              <Slider
+                min={0.0}
+                max={1.0}
+                step={0.05}
+                value={[topP]}
+                onValueChange={(values) => onTopPChange(values[0])}
+                className="w-full"
+              />
+              <p className="text-xs text-muted-foreground">Nucleus sampling parameter</p>
             </div>
           </div>
         )}

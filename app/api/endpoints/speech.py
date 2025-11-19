@@ -147,7 +147,10 @@ async def generate_speech_internal(
     language_id: str = "en",
     exaggeration: Optional[float] = None,
     cfg_weight: Optional[float] = None,
-    temperature: Optional[float] = None
+    temperature: Optional[float] = None,
+    repetition_penalty: Optional[float] = None,
+    min_p: Optional[float] = None,
+    top_p: Optional[float] = None
 ) -> io.BytesIO:
     """Internal function to generate speech with given parameters"""
     global REQUEST_COUNTER
@@ -162,6 +165,9 @@ async def generate_speech_internal(
             "exaggeration": exaggeration,
             "cfg_weight": cfg_weight,
             "temperature": temperature,
+            "repetition_penalty": repetition_penalty,
+            "min_p": min_p,
+            "top_p": top_p,
             "voice_sample_path": voice_sample_path
         }
     )
@@ -212,16 +218,22 @@ async def generate_speech_internal(
         exaggeration = exaggeration if exaggeration is not None else Config.EXAGGERATION
         cfg_weight = cfg_weight if cfg_weight is not None else Config.CFG_WEIGHT
         temperature = temperature if temperature is not None else Config.TEMPERATURE
-        
+        repetition_penalty = repetition_penalty if repetition_penalty is not None else Config.REPETITION_PENALTY
+        min_p = min_p if min_p is not None else Config.MIN_P
+        top_p = top_p if top_p is not None else Config.TOP_P
+
         # Split text into chunks
         update_tts_status(request_id, TTSStatus.CHUNKING, "Splitting text into chunks")
         chunks = split_text_into_chunks(text, Config.MAX_CHUNK_LENGTH)
-        
+
         voice_source = "uploaded file" if voice_sample_path != Config.VOICE_SAMPLE_PATH else "configured sample"
         print(f"Processing {len(chunks)} text chunks with {voice_source} and parameters:")
         print(f"  - Exaggeration: {exaggeration}")
         print(f"  - CFG Weight: {cfg_weight}")
         print(f"  - Temperature: {temperature}")
+        print(f"  - Repetition Penalty: {repetition_penalty}")
+        print(f"  - Min P: {min_p}")
+        print(f"  - Top P: {top_p}")
         
         # Update status with chunk information
         update_tts_status(request_id, TTSStatus.GENERATING_AUDIO, "Starting audio generation", 
@@ -247,7 +259,10 @@ async def generate_speech_internal(
                     "audio_prompt_path": voice_sample_path,
                     "exaggeration": exaggeration,
                     "cfg_weight": cfg_weight,
-                    "temperature": temperature
+                    "temperature": temperature,
+                    "repetition_penalty": repetition_penalty,
+                    "min_p": min_p,
+                    "top_p": top_p
                 }
                 
                 # Add language_id for multilingual models
@@ -827,7 +842,10 @@ async def text_to_speech(request: TTSRequest):
             language_id=language_id,
             exaggeration=request.exaggeration,
             cfg_weight=request.cfg_weight,
-            temperature=request.temperature
+            temperature=request.temperature,
+            repetition_penalty=request.repetition_penalty,
+            min_p=request.min_p,
+            top_p=request.top_p
         )
         
         # Create response
@@ -860,6 +878,9 @@ async def text_to_speech_with_upload(
     exaggeration: Optional[float] = Form(None, description="Emotion intensity (0.25-2.0)", ge=0.25, le=2.0),
     cfg_weight: Optional[float] = Form(None, description="Pace control (0.0-1.0)", ge=0.0, le=1.0),
     temperature: Optional[float] = Form(None, description="Sampling temperature (0.05-5.0)", ge=0.05, le=5.0),
+    repetition_penalty: Optional[float] = Form(None, description="Prevents repetitive speech (1.0-3.0)", ge=1.0, le=3.0),
+    min_p: Optional[float] = Form(None, description="Minimum probability threshold (0.0-1.0)", ge=0.0, le=1.0),
+    top_p: Optional[float] = Form(None, description="Nucleus sampling (0.0-1.0)", ge=0.0, le=1.0),
     streaming_chunk_size: Optional[int] = Form(None, description="Characters per streaming chunk (50-500)", ge=50, le=500),
     streaming_strategy: Optional[str] = Form(None, description="Chunking strategy (sentence, paragraph, fixed, word)"),
     streaming_quality: Optional[str] = Form(None, description="Quality preset (fast, balanced, high)"),
@@ -988,7 +1009,10 @@ async def text_to_speech_with_upload(
                 language_id=language_id,
                 exaggeration=exaggeration,
                 cfg_weight=cfg_weight,
-                temperature=temperature
+                temperature=temperature,
+                repetition_penalty=repetition_penalty,
+                min_p=min_p,
+                top_p=top_p
             )
             
             # Create response

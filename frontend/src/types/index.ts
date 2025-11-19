@@ -4,6 +4,9 @@ export interface TTSRequest {
   exaggeration?: number;
   cfg_weight?: number;
   temperature?: number;
+  repetition_penalty?: number;
+  min_p?: number;
+  top_p?: number;
   voice_file?: File;
   session_id?: string;
   stream_format?: 'audio' | 'sse';

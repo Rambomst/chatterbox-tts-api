@@ -22,6 +22,18 @@ export const createTTSService = (baseUrl: string, sessionId?: string) => ({
       formData.append('temperature', request.temperature.toString());
     }
 
+    if (request.repetition_penalty !== undefined) {
+      formData.append('repetition_penalty', request.repetition_penalty.toString());
+    }
+
+    if (request.min_p !== undefined) {
+      formData.append('min_p', request.min_p.toString());
+    }
+
+    if (request.top_p !== undefined) {
+      formData.append('top_p', request.top_p.toString());
+    }
+
     if (request.voice_file) {
       formData.append('voice_file', request.voice_file);
     }
@@ -152,6 +164,18 @@ export const createTTSService = (baseUrl: string, sessionId?: string) => ({
 
     if (request.temperature !== undefined) {
       formData.append('temperature', request.temperature.toString());
+    }
+
+    if (request.repetition_penalty !== undefined) {
+      formData.append('repetition_penalty', request.repetition_penalty.toString());
+    }
+
+    if (request.min_p !== undefined) {
+      formData.append('min_p', request.min_p.toString());
+    }
+
+    if (request.top_p !== undefined) {
+      formData.append('top_p', request.top_p.toString());
     }
 
     if (request.voice_file) {

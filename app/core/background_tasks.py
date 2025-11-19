@@ -191,7 +191,10 @@ class LongTextProcessor:
                         language_id=language_id,
                         exaggeration=metadata.parameters.get('exaggeration'),
                         cfg_weight=metadata.parameters.get('cfg_weight'),
-                        temperature=metadata.parameters.get('temperature')
+                        temperature=metadata.parameters.get('temperature'),
+                        repetition_penalty=metadata.parameters.get('repetition_penalty'),
+                        min_p=metadata.parameters.get('min_p'),
+                        top_p=metadata.parameters.get('top_p')
                     )
 
                     # Save chunk audio file

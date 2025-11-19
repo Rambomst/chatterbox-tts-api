@@ -50,9 +50,15 @@ export default function TTSPage() {
     exaggeration,
     cfgWeight,
     temperature,
+    repetitionPenalty,
+    minP,
+    topP,
     updateExaggeration,
     updateCfgWeight,
     updateTemperature,
+    updateRepetitionPenalty,
+    updateMinP,
+    updateTopP,
     resetToDefaults,
     isDefault
   } = useAdvancedSettings();
@@ -314,6 +320,9 @@ export default function TTSPage() {
       exaggeration,
       cfg_weight: cfgWeight,
       temperature,
+      repetition_penalty: repetitionPenalty,
+      min_p: minP,
+      top_p: topP,
       session_id: sessionId
     };
 
@@ -572,6 +581,12 @@ export default function TTSPage() {
               onCfgWeightChange={updateCfgWeight}
               temperature={temperature}
               onTemperatureChange={updateTemperature}
+              repetitionPenalty={repetitionPenalty}
+              onRepetitionPenaltyChange={updateRepetitionPenalty}
+              minP={minP}
+              onMinPChange={updateMinP}
+              topP={topP}
+              onTopPChange={updateTopP}
               onResetToDefaults={resetToDefaults}
               isDefault={isDefault}
             />
